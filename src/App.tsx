@@ -1,8 +1,8 @@
 import './App.css'
 import {Route, Routes} from "react-router-dom";
-import ProtectedRoutesWrapper from "@/pages/authorizedRoutes/ProtectedRoutesWrapper.tsx";
-import Authorization from "@/pages/unauthorizedRoutes/Authorization.tsx";
-import Home from "@/pages/authorizedRoutes/Home.tsx";
+import MainPage from "@/view/authorizedRoutes/MainPage.tsx";
+import Authorization from "@/view/unauthorizedRoutes/Authorization.tsx";
+import Home from "@/view/authorizedRoutes/Home.tsx";
 
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
         <>
             <Routes>
                 {/*დაცული როუტები*/}
-                <Route element={<ProtectedRoutesWrapper/>}>
+                <Route element={<MainPage/>}>
                     <Route element={<Home/>} path="/"/>
                 </Route>
 

@@ -1,9 +1,9 @@
 import {MoonIcon, SunIcon} from "lucide-react";
 import {Button} from "@/components/ui/button.tsx";
-import {useTheme} from "@/store/theme/ThemeProvider.tsx";
+import { useThemeContext} from "@/store/theme/ThemeProvider.tsx";
 
 const ModeToggle = () => {
-    const {theme, setTheme} = useTheme()
+    const {theme, setTheme} = useThemeContext()
     const toggleTheme = () => {
         setTheme(theme === "light" ? "dark" : "light");
     }
@@ -11,8 +11,6 @@ const ModeToggle = () => {
     return (
         <Button onClick={toggleTheme} variant="outline" size="icon">
             {theme === "light" ? <MoonIcon/> : <SunIcon/>}
-
-
         </Button>
     )
 }
