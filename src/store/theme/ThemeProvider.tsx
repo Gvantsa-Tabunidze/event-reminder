@@ -1,17 +1,16 @@
 import {createContext} from "react";
 import type {Theme} from "./types/theme.ts";
-import {type ThemeProvider, useTheme} from "./hooks/useTheme.ts"
-
+import {type ThemeProviderInterface, useTheme} from "./hooks/useTheme.ts"
 
 
 export interface ThemeProviderState {
     theme: Theme,
     setTheme: (theme: Theme) => void,
 }
-interface ThemeProviderProps extends ThemeProvider {
+
+interface ThemeProviderProps extends ThemeProviderInterface {
     children: React.ReactNode,
 }
-
 
 
 //Initial State
@@ -24,7 +23,7 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
 function ThemeProvider({
                            children,
-                           defaultTheme="light",
+                           defaultTheme = "light",
                            storageKey = "vite-ui-theme",
                            ...props
                        }: ThemeProviderProps) {
@@ -40,7 +39,4 @@ function ThemeProvider({
 }
 
 
-
-
-
-export  {ThemeProviderContext, ThemeProvider}
+export {ThemeProviderContext, ThemeProvider}
