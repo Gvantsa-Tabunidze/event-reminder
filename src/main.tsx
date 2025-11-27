@@ -3,7 +3,6 @@ import {createRoot} from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import {BrowserRouter} from 'react-router-dom'
-import {ClerkProvider} from '@clerk/clerk-react'
 import {ThemeProvider} from "@/store/theme/ThemeProvider.tsx";
 
 
@@ -15,9 +14,9 @@ createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <BrowserRouter>
             <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-                <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+
                     <App/>
-                </ClerkProvider>
+
             </ThemeProvider>
         </BrowserRouter>
     </StrictMode>,

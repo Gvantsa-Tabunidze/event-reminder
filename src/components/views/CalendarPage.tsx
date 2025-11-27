@@ -5,7 +5,7 @@ import { getEvents, createEvent } from "@/api/index.ts"
 import type { EventItem } from "@/api/type.ts"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useSession } from "@clerk/clerk-react"
+// import { useSession } from "@clerk/clerk-react"
 
 export function CalendarPage() {
     const [date, setDate] = useState<Date | undefined>(new Date())
@@ -19,7 +19,7 @@ export function CalendarPage() {
     const [address, setAddress] = useState("")
     const [attendees, setAttendees] = useState("")
 
-    const { session } = useSession() // Clerk session hook
+    // const { session } = useSession() // Clerk session hook
 
     async function loadEvents() {
         const allEvents = await getEvents()
@@ -41,17 +41,17 @@ export function CalendarPage() {
 
     async function handleCreate() {
         if (!date) return
-        if (!session) {
-            alert("Please login to create event")
-            return
-        }
+        // if (!session) {
+        //     alert("Please login to create event")
+        //     return
+        // }
 
-        const token = await session.getToken()
+        // const token = await session.getToken()
 
-        if (!token) {
-            alert("Please login to create event")
-            return
-        }
+        // if (!token) {
+        //     alert("Please login to create event")
+        //     return
+        // }
 
         await createEvent(
             {
@@ -62,7 +62,7 @@ export function CalendarPage() {
                 address,
                 attendees
             },
-            token
+            // token
         )
 
         // reset form

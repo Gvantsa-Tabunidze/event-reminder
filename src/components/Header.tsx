@@ -1,5 +1,4 @@
 import {Link} from "react-router-dom";
-import {UserButton} from "@clerk/clerk-react";
 import ModeToggle from "@/components/ModeToggle.tsx";
 import Notification from "@/components/Notification.tsx";
 import {SidebarTrigger} from "@/components/ui/sidebar.tsx";
@@ -19,7 +18,7 @@ const Header = () => {
                         <ModeToggle/>
                     </div>
 
-                    <UserButton/>
+
                 </div>
             </nav>
         </div>
