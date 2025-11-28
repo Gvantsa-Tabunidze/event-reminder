@@ -4,20 +4,17 @@ import './index.css'
 import App from './App.tsx'
 import {BrowserRouter} from 'react-router-dom'
 import {ThemeProvider} from "@/store/theme/ThemeProvider.tsx";
+import {AuthContextProvider} from "@/store/auth/AuthContext.tsx";
 
 
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
-if (!PUBLISHABLE_KEY) {
-    throw new Error('Add your Clerk Publishable Key to the .env file')
-}
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <BrowserRouter>
-            <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-
+        <AuthContextProvider>
+            <BrowserRouter>
+                <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
                     <App/>
-
-            </ThemeProvider>
-        </BrowserRouter>
+                </ThemeProvider>
+            </BrowserRouter>
+        </AuthContextProvider>
     </StrictMode>,
 )
