@@ -4,7 +4,8 @@ import {Button} from "@/components/ui/button"
 import {Link, useNavigate} from "react-router-dom";
 import * as Yup from "yup";
 import {useFormik} from "formik";
-import {useUserAuth} from "@/store/auth/AuthContext.tsx";
+import {useUserAuth} from "@/store/auth/hooks/useUserAuth.ts";
+
 
 const validationSchema = Yup.object({
     name: Yup.string()
@@ -34,7 +35,11 @@ const SignUp = () => {
         validationSchema,
         onSubmit: async (values, {setSubmitting}) => {
             try {
-                const result = await signUpNewUser(values.email, values.password, values.name);
+                const result = await signUpNewUser({
+                    email: values.email,
+                    password: values.password,
+                    name: values.name
+                });
 
                 if (result.success) {
                     navigate('/');
@@ -49,17 +54,18 @@ const SignUp = () => {
 
 
     const {values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting} = formik;
+    
 
-    const {session, signUpNewUser} = useUserAuth()
-    console.log(session)
+    const {authSession, signUpNewUser} = useUserAuth()!
+    console.log(authSession)
 
     return (
         <div className="flex flex-col items-center gap-4">
             <form className="flex flex-col justify-center gap-6" onSubmit={handleSubmit}>
                 <div className="flex flex-col justify-center gap-2">
-                    <Label htmlFor="email">Name</Label>
-                    <Input type="text" name="full_name" placeholder='Full name'
-                           onChange={handleChange} onBlur={handleBlur}/>
+                    <Label htmlFor="email">Full name</Label>
+                    <Input type="text" name="name" placeholder='Full name'
+                           onChange={handleChange} onBlur={handleBlur} value={values.name}/>
                     {touched.name && errors.name && <p className="text-red-500 font-light text-sm">{errors.name}</p>}
                 </div>
                 <div className="flex flex-col justify-center gap-2">

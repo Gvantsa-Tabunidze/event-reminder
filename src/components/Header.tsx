@@ -1,9 +1,21 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import ModeToggle from "@/components/ModeToggle.tsx";
 import Notification from "@/components/Notification.tsx";
 import {SidebarTrigger} from "@/components/ui/sidebar.tsx";
+import {useUserAuth} from "@/store/auth/hooks/useUserAuth.ts";
+import SignOutButton from "@/components/SignOut.tsx";
+import {useEffect} from "react";
+
 
 const Header = () => {
+    const {authSession} = useUserAuth()
+
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (!authSession) {
+            navigate("/sign-up")
+        }
+    }, [authSession, navigate])
 
 
     return (
@@ -16,6 +28,7 @@ const Header = () => {
                     <div className="flex items-start gap-2">
                         <Notification/>
                         <ModeToggle/>
+                        <SignOutButton/>
                     </div>
 
 
