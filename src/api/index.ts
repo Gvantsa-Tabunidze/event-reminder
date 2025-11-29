@@ -10,16 +10,16 @@ export async function getEvents(): Promise<EventItem[]> {
     if (error) throw error
     return data as EventItem[]
 }
-
-export async function createEvent(event: Partial<EventItem>, token: string) {
-    if (!token) throw new Error("Not logged in")
+//  token: string
+export async function createEvent(event: Partial<EventItem>) {
+    // if (!token) throw new Error("Not logged in")
 
     const res = await fetch("https://<YOUR_SUPABASE_URL>/rest/v1/events", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "apikey": "<YOUR_SUPABASE_ANON_KEY>",
-            "Authorization": `Bearer ${token}` // Clerk JWT
+            // "Authorization": `Bearer ${token}` // Clerk JWT
         },
         body: JSON.stringify(event)
     })

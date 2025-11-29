@@ -1,21 +1,18 @@
-import { Navigate, Outlet } from 'react-router-dom'
+import {Outlet} from 'react-router-dom'
 import Header from "@/components/Header.tsx";
-import { useUser } from "@clerk/clerk-react";
-import { SidebarProvider } from '@/components/ui/sidebar';
+import {SidebarProvider} from '@/components/ui/sidebar';
 import AppSidebar from "@/components/AppSidebar.tsx";
 
 const MainPage = () => {
-    const { isSignedIn } = useUser()
-    if (!isSignedIn) return <Navigate to="/authorization" replace />
 
     return (
         <SidebarProvider>
             <div className="flex min-h-screen w-full">
-                <AppSidebar />
+                <AppSidebar/>
                 <main className="flex-1 flex flex-col">
-                    <Header />
+                    <Header/>
                     <div className="p-4">
-                        <Outlet />
+                        <Outlet/>
                     </div>
                 </main>
             </div>
