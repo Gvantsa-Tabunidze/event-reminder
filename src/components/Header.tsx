@@ -4,15 +4,16 @@ import Notification from "@/components/Notification.tsx";
 import {SidebarTrigger} from "@/components/ui/sidebar.tsx";
 import {useUserAuth} from "@/store/auth/hooks/useUserAuth.ts";
 import SignOutButton from "@/components/SignOut.tsx";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 
 const Header = () => {
-    const {authSession} = useUserAuth()
+    const {authSession, loading} = useUserAuth()
+   
 
     const navigate = useNavigate()
     useEffect(() => {
-        if (!authSession) {
+        if (!authSession && !loading) {
             navigate("/sign-up")
         }
     }, [authSession, navigate])
@@ -30,8 +31,6 @@ const Header = () => {
                         <ModeToggle/>
                         <SignOutButton/>
                     </div>
-
-
                 </div>
             </nav>
         </div>

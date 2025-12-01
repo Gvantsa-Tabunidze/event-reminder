@@ -20,4 +20,5 @@ export interface IAuthContext {
         error?: AuthError
     }>
     signOut: () => Promise<void>
+    loading:boolean
 }

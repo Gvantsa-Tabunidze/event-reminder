@@ -11,6 +11,7 @@ interface IAuthProviderProps {
 
 export const AuthContextProvider = ({children}: IAuthProviderProps) => {
     const [authSession, setAuthSession] = useState<Session | null>(null);
+    const [loading, setLoading] = useState(true)
     console.log(authSession)
 
     //Sign up new user
@@ -24,12 +25,9 @@ export const AuthContextProvider = ({children}: IAuthProviderProps) => {
                 }
             }
         });
-        if (error) {
-            console.error("There was a problem signing up:", error)
-            return {success: false, error}
-        }
+        if (data?.session) setAuthSession(data.session); 
         console.log(data)
-        return {success: true, data}
+        return error ? {success: false, error} : {success: true, data};      
     }
 
     //Sign in
@@ -39,39 +37,52 @@ export const AuthContextProvider = ({children}: IAuthProviderProps) => {
                 email: email,
                 password: password
             })
-            if (error) {
-                console.error("Sign in error occurred:", error.message)
-                return {success: false, error}
-            }
+            if (data?.session) setAuthSession(data.session); 
             console.log("sign in was successful", data)
-            return {success: true, data}
+            return error ? {success: false, error} : {success: true, data};
         } catch (err) {
             console.error("There was a problemsigning up:", err)
             return {success: false, error: undefined};
         }
     }
 
-    //Listen to state in AuthState change
+    // Load session + subscribe
     useEffect(() => {
+        let isMounted = true;
         supabase.auth.getSession().then(({data: {session}}) => {
-            console.log("Initial session:", session);
-            setAuthSession(session)
+            if(isMounted) {
+                console.log("Initial session:", session);
+                setAuthSession(session)
+                setLoading(false)
+            }
+            
         })
 
-        supabase.auth.onAuthStateChange((_event, session) => {
+        const {data:subscription} = supabase.auth.onAuthStateChange((_event, session) => {
             console.log("Auth state changed:", session);
-            setAuthSession(session)
+            if(isMounted){
+                setAuthSession(session)
+            }
+            
         })
+
+        //clean-up
+        return()=> {
+            isMounted = false
+            subscription.subscription.unsubscribe() 
+        }
     }, [])
 
     //Sign Out
     const signOut = async () => {
         const {error} = await supabase.auth.signOut();
         if (error) throw new Error(error.message)
+        setAuthSession(null);
+
     }
 
     return (
-        <AuthContext.Provider value={{authSession, signUpNewUser, signOut, signInUser, setAuthSession}}>
+        <AuthContext.Provider value={{authSession, signUpNewUser, signOut, signInUser, setAuthSession, loading}}>
             {children}
         </AuthContext.Provider>
     )
