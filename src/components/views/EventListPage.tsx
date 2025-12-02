@@ -2,9 +2,12 @@ import { useEffect, useState } from "react"
 import { getEvents } from "@/api/index.ts"
 import { EventCard } from "@/components/views/EventCard"
 import type { EventItem } from "@/api/type.ts"
+import {EventModal} from "@/components/EventModal"
+
 
 export function EventListPage() {
     const [events, setEvents] = useState<EventItem[]>([])
+    
 
     async function loadEvents() {
        try {
@@ -16,8 +19,15 @@ export function EventListPage() {
     }
 
     useEffect(() => {
+        //Initial load
         loadEvents()
-    }, [events])
+    }, [])
+
+    
+    //Callback to pass to modal
+    const handleEventAdded = async ()=>{
+        await loadEvents()
+    }
 
     return (
         <div className="flex flex-col gap-4 w-full h-full">

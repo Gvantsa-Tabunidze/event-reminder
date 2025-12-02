@@ -3,7 +3,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { EventCard } from "@/components/views/EventCard"
 import { getEvents } from "@/api/index.ts"
 import type { EventItem } from "@/api/type.ts"
-import  EventModal  from "../EventModal"
+import  {EventModal}  from "../EventModal"
 import { Button } from "@/components/ui/button"
 
 

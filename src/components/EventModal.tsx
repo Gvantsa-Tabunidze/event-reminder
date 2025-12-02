@@ -12,12 +12,13 @@ import {createEvent} from "@/api/index"
 
 
 
+
 interface EventModalProps{
     onClose:()=>void
-}
+    }
 
 
-const EventModal:React.FC<EventModalProps> = ({onClose}) => {
+export const EventModal:React.FC<EventModalProps> = ({onClose}) => {
     const formik = useFormik({
         initialValues: {
             title: '',
@@ -78,4 +79,4 @@ const EventModal:React.FC<EventModalProps> = ({onClose}) => {
   )
 }
 
-export default EventModal
+

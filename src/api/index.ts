@@ -10,12 +10,12 @@ export async function getEvents(): Promise<EventsResponse> {
         .select("*")
         .order("created_at", { ascending: true })
     if (error) throw error
-    console.log(status)
     return {success:true, data}
    } catch (error) {
     return {success:false, error}
    }
 }
+
 
 
 export async function createEvent(event: Partial<EventItem>) {
