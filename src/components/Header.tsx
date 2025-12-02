@@ -4,7 +4,7 @@ import Notification from "@/components/Notification.tsx";
 import {SidebarTrigger} from "@/components/ui/sidebar.tsx";
 import {useUserAuth} from "@/store/auth/hooks/useUserAuth.ts";
 import SignOutButton from "@/components/SignOut.tsx";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 
 
 const Header = () => {
