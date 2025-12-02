@@ -9,15 +9,14 @@ import { EditEventModal } from "./EditEventModal"
 
 interface Props {
     event: EventItem
-    onChange: () => void
+    // onChange: () => void
 }
 
-export function EventCard({ event, onChange }: Props) {
+export function EventCard({ event }: Props) {
     const [editOpen, setEditOpen] = useState(false)
 
     async function remove() {
         await deleteEvent(event.id)
-        onChange()
     }
 
     return (
@@ -41,7 +40,7 @@ export function EventCard({ event, onChange }: Props) {
                     <Button size="sm" variant="destructive" onClick={remove}>Delete</Button>
                 </ItemActions>
             </Item>
-            <EditEventModal open={editOpen} onClose={() => setEditOpen(false)} event={event} onUpdated={onChange} />
+            <EditEventModal open={editOpen} onClose={() => setEditOpen(false)} event={event} />
         </>
     )
 }

@@ -6,7 +6,13 @@ export interface EventItem {
     date?: string
     time?: string
     address?: string
-    attendees?: string
+    attendees?: string[]
     created_at?: string
+}
+
+export interface EventsResponse {
+    success:boolean,
+    data?:EventItem[] 
+    error?:any
 }
 

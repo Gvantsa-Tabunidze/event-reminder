@@ -1,36 +1,46 @@
 import { supabase } from "./supabaseClient"
 import type { EventItem } from "@/api/type.ts"
+import {type EventsResponse} from "./type"
 
 
-export async function getEvents(): Promise<EventItem[]> {
-    const { data, error } = await supabase
+export async function getEvents(): Promise<EventsResponse> {
+   try {
+     const { data, error, status } = await supabase
         .from("events")
         .select("*")
-        .order("created_at", { ascending: false })
+        .order("created_at", { ascending: true })
     if (error) throw error
-    return data as EventItem[]
+    console.log(status)
+    return {success:true, data}
+   } catch (error) {
+    return {success:false, error}
+   }
 }
-//  token: string
+
+
 export async function createEvent(event: Partial<EventItem>) {
-    // if (!token) throw new Error("Not logged in")
-
-    const res = await fetch("https://<YOUR_SUPABASE_URL>/rest/v1/events", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "apikey": "<YOUR_SUPABASE_ANON_KEY>",
-            // "Authorization": `Bearer ${token}` // Clerk JWT
-        },
-        body: JSON.stringify(event)
-    })
-
-    if (!res.ok) {
-        const errText = await res.text()
-        throw new Error(`Failed to create event: ${errText}`)
+    
+    try {
+        const {data:{session}} = await supabase.auth.getSession()
+        if(!session) throw new Error("Not authorized")
+        const user_id = session.user.id
+        const {data, error} = await supabase
+        .from("events")
+        .insert({
+           ...event,
+           user_id
+        })
+        .select("*")
+        if (error) throw error
+        return {success:true, data}
+    } catch (error) {
+        //Toast here
+        return {success:false, error}
     }
-
-    return res.json()
 }
+
+
+
 
 export async function updateEvent(id: string, updates: Partial<EventItem>) {
     const { error } = await supabase.from("events").update(updates).eq("id", id)
