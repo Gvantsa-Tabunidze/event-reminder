@@ -1,6 +1,3 @@
-import type { EventItem } from "@/api/type.ts"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import {
   Card,
   CardContent,
@@ -8,29 +5,33 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { useFormik } from "formik"
-import { useEvents } from "@/store/events/hooks/EventsContextHook"
-import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {useFormik} from "formik";
+import { useEvents } from "@/store/events/hooks/EventsContextHook";
 
-interface Props {
-    onClose: () => void
-    event: EventItem
-}
 
-export function EditEventModal({  onClose, event }: Props) {
-    const {updateEvent} = useEvents()
+
+
+interface EventModalProps{
+    onClose:()=>void
+    }
+
+
+export const EventModal:React.FC<EventModalProps> = ({onClose}) => {
+    const {createEvent} = useEvents()
     const formik = useFormik({
         initialValues: {
-            title:event.title ||'',
-            badge:event.badge || '',
-            date:event.date || '',
-            time:event.time || '',
-            address:event.address || '',
-            attendees: event.attendees || [] 
+            title:'',
+            badge:'',
+            date:'',
+            time:'',
+            address:'',
+            attendees: [] as string[]
         },
         onSubmit: async (values, {setSubmitting, resetForm}) => {
             try {
-                const result = await updateEvent(event.id, {
+                const result = await createEvent({
                     title: values.title,
                     badge:values.badge,
                     date:values.date,
@@ -53,10 +54,8 @@ export function EditEventModal({  onClose, event }: Props) {
 
     const {values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting} = formik;
 
-    if (!open) return null
-
-     return (
-        <Card>
+  return (
+   <Card>
         <CardHeader>
             <CardTitle>Add or Edit event</CardTitle>
         </CardHeader>
@@ -69,11 +68,13 @@ export function EditEventModal({  onClose, event }: Props) {
                     <Input name="address" placeholder="Address" value={values.address} onChange={handleChange} onBlur={handleBlur}/>
                     <Input name="attendees" placeholder="Attendees" value={values.attendees} onChange={handleChange} onBlur={handleBlur}/>
                     <CardFooter className="flex justify-end gap-4 px-0">
-                        <Button variant="outline" onClick={()=>onClose()}>Cancel</Button>
-                        <Button type="submit" disabled={isSubmitting} >Save</Button>
+                        <Button variant="outline">Cancel</Button>
+                        <Button type="submit" disabled={isSubmitting}>Save</Button>
                     </CardFooter>
                 </form>
             </CardContent>
     </Card>
-  )    
+  )
 }
+
+
