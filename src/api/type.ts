@@ -12,7 +12,7 @@ export interface EventItem {
 
 export interface EventsResponse {
     success:boolean,
-    data?:EventItem[] 
+    data:EventItem[] 
     error?:any
 }
 

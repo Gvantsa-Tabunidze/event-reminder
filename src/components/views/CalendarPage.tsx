@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react"
 import { Calendar } from "@/components/ui/calendar"
 import { EventCard } from "@/components/views/EventCard"
-import { getEvents } from "@/api/index.ts"
 import type { EventItem } from "@/api/type.ts"
 import  {EventModal}  from "../EventModal"
 import { Button } from "@/components/ui/button"
+import { useEvents } from "@/store/events/hooks/EventsContextHook"
 
 
 export function CalendarPage() {
+    const {getEvents} = useEvents()
     const [date, setDate] = useState<Date | undefined>(new Date())
     const [events, setEvents] = useState<EventItem[]>([])
     const [modalOpen, setModalOpen] = useState(false)

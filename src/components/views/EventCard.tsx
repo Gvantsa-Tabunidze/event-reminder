@@ -1,11 +1,12 @@
 import { useState } from "react"
 import type { EventItem } from "@/api/type.ts"
-import { deleteEvent } from "@/api/index.ts"
 import { Button } from "@/components/ui/button"
 import { Item, ItemMedia, ItemContent, ItemTitle, ItemActions } from "@/components/ui/item"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Clock, MapPin, Users } from "lucide-react"
+import {useEvents} from "@/store/events/hooks/EventsContextHook"
 import { EditEventModal } from "./EditEventModal"
+
 
 interface Props {
     event: EventItem
@@ -13,11 +14,10 @@ interface Props {
 }
 
 export function EventCard({ event }: Props) {
+    const {deleteEvent} = useEvents()
     const [editOpen, setEditOpen] = useState(false)
 
-    async function remove() {
-        await deleteEvent(event.id)
-    }
+  
 
     return (
         <>
@@ -37,10 +37,10 @@ export function EventCard({ event }: Props) {
                 </ItemContent>
                 <ItemActions>
                     <Button size="sm" onClick={() => setEditOpen(true)}>Edit</Button>
-                    <Button size="sm" variant="destructive" onClick={remove}>Delete</Button>
+                    <Button size="sm" variant="destructive" onClick={()=>deleteEvent(event.id)}>Delete</Button>
                 </ItemActions>
             </Item>
-            <EditEventModal open={editOpen} onClose={() => setEditOpen(false)} event={event} />
+           {editOpen && <EditEventModal event={event} onClose={()=>{setEditOpen(false)}}/>}
         </>
     )
 }

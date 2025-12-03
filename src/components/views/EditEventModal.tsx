@@ -1,72 +1,79 @@
-import { useState, useEffect } from "react"
 import type { EventItem } from "@/api/type.ts"
-import { updateEvent } from "@/api/index.ts"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { useFormik } from "formik"
+import { useEvents } from "@/store/events/hooks/EventsContextHook"
+import { useState } from "react"
 
 interface Props {
-    open: boolean
     onClose: () => void
     event: EventItem
-    // onUpdated: () => void
 }
 
-export function EditEventModal({ open, onClose, event }: Props) {
-    const [title, setTitle] = useState(event.title || "")
-    const [badge, setBadge] = useState(event.badge || "")
-    const [date, setDate] = useState(event.date || "")
-    const [time, setTime] = useState(event.time || "")
-    const [address, setAddress] = useState(event.address || "")
-    const [attendees, setAttendees] = useState(event.attendees || "")
+export function EditEventModal({  onClose, event }: Props) {
+    const {updateEvent} = useEvents()
+    const formik = useFormik({
+        initialValues: {
+            title:event.title ||'',
+            badge:event.badge || '',
+            date:event.date || '',
+            time:event.time || '',
+            address:event.address || '',
+            attendees: event.attendees || [] 
+        },
+        onSubmit: async (values, {setSubmitting, resetForm}) => {
+            try {
+                const result = await updateEvent(event.id, {
+                    title: values.title,
+                    badge:values.badge,
+                    date:values.date,
+                    time:values.time,
+                    address:values.address,
+                    attendees:values.attendees
+                });
+                console.log(result)
+                if(result.success) {
+                    resetForm()
+                    onClose()
+                }
+            } catch (error) {
+                console.log(error)
+            } finally{
+                setSubmitting(false)
+            }
+        },
+    })
 
-    useEffect(() => {
-        setTitle(event.title || "")
-        setBadge(event.badge || "")
-        setDate(event.date || "")
-        setTime(event.time || "")
-        setAddress(event.address || "")
-        setAttendees(event.attendees || "")
-    }, [event])
+    const {values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting} = formik;
 
     if (!open) return null
 
-    async function save() {
-        await updateEvent(event.id, { title, badge, date, time, address })
-        // onUpdated()
-        onClose()
-    }
-
-    return (
+     return (
         <Card>
-            <CardHeader>
-                <CardTitle>Add or Edit event</CardTitle>
-            </CardHeader>
-                <CardContent>
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                        <div className="bg-white p-6 rounded-md w-full max-w-md space-y-3">
-                            <h2 className="text-lg font-semibold">Edit Event</h2>
-                            <Input placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} />
-                            <Input placeholder="Badge" value={badge} onChange={e => setBadge(e.target.value)} />
-                            <Input type="date" value={date} onChange={e => setDate(e.target.value)} />
-                            <Input type="time" value={time} onChange={e => setTime(e.target.value)} />
-                            <Input placeholder="Address" value={address} onChange={e => setAddress(e.target.value)} />
-                            <Input placeholder="Attendees" value={attendees} onChange={e => setAttendees(e.target.value)} />
-                            <div className="flex justify-end gap-2 mt-2">
-                                <Button variant="outline" onClick={onClose}>Cancel</Button>
-                                <Button onClick={save}>Save</Button>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-        </Card>
-    )
+        <CardHeader>
+            <CardTitle>Add or Edit event</CardTitle>
+        </CardHeader>
+            <CardContent>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                    <Input name="title" placeholder="Title" value={values.title} onChange={handleChange} onBlur={handleBlur}/>
+                    <Input name="badge" placeholder="Badge"  value={values.badge} onChange={handleChange} onBlur={handleBlur}/>
+                    <Input name="date" type="date" value={values.date} onChange={handleChange} onBlur={handleBlur}/>
+                    <Input name="time" type="time"  value={values.time} onChange={handleChange} onBlur={handleBlur}/>
+                    <Input name="address" placeholder="Address" value={values.address} onChange={handleChange} onBlur={handleBlur}/>
+                    <Input name="attendees" placeholder="Attendees" value={values.attendees} onChange={handleChange} onBlur={handleBlur}/>
+                    <CardFooter className="flex justify-end gap-4 px-0">
+                        <Button variant="outline" onClick={()=>onClose()}>Cancel</Button>
+                        <Button type="submit" disabled={isSubmitting} >Save</Button>
+                    </CardFooter>
+                </form>
+            </CardContent>
+    </Card>
+  )    
 }

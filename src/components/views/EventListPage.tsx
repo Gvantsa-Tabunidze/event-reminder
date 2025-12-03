@@ -1,35 +1,19 @@
 import { useEffect, useState } from "react"
-import { getEvents } from "@/api/index.ts"
 import { EventCard } from "@/components/views/EventCard"
 import type { EventItem } from "@/api/type.ts"
-import {EventModal} from "@/components/EventModal"
+import { useEvents } from "@/store/events/hooks/EventsContextHook"
 
 
 export function EventListPage() {
-    const [events, setEvents] = useState<EventItem[]>([])
-    
-
-    async function loadEvents() {
-       try {
-        const data = await getEvents()
-        setEvents(data?.data ?? [])
-       } catch (error) {
-         console.log(error)
-       }
-    }
+    const {getEvents, events} = useEvents()
+  
 
     useEffect(() => {
-        //Initial load
-        loadEvents()
+       getEvents()
     }, [])
 
     
-    //Callback to pass to modal
-    const handleEventAdded = async ()=>{
-        await loadEvents()
-    }
-
-    return (
+     return (
         <div className="flex flex-col gap-4 w-full h-full">
             <h2 className="text-2xl font-medium">All Events</h2>
             {events.map(ev => <EventCard key={ev.id} event={ev} />)}

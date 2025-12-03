@@ -8,7 +8,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {useFormik} from "formik";
-import {createEvent} from "@/api/index"
+import { useEvents } from "@/store/events/hooks/EventsContextHook";
 
 
 
@@ -19,10 +19,11 @@ interface EventModalProps{
 
 
 export const EventModal:React.FC<EventModalProps> = ({onClose}) => {
+    const {createEvent} = useEvents()
     const formik = useFormik({
         initialValues: {
-            title: '',
-            badge: '',
+            title:'',
+            badge:'',
             date:'',
             time:'',
             address:'',
@@ -35,16 +36,13 @@ export const EventModal:React.FC<EventModalProps> = ({onClose}) => {
                     badge:values.badge,
                     date:values.date,
                     time:values.time,
-                    address: values.address,
-                    attendees: values.attendees
+                    address:values.address,
+                    attendees:values.attendees
                 });
-               
                 console.log(result)
                 if(result.success) {
                     resetForm()
                     onClose()
-                    console.log('success')
-                    //toast here
                 }
             } catch (error) {
                 console.log(error)
@@ -70,7 +68,7 @@ export const EventModal:React.FC<EventModalProps> = ({onClose}) => {
                     <Input name="address" placeholder="Address" value={values.address} onChange={handleChange} onBlur={handleBlur}/>
                     <Input name="attendees" placeholder="Attendees" value={values.attendees} onChange={handleChange} onBlur={handleBlur}/>
                     <CardFooter className="flex justify-end gap-4 px-0">
-                        <Button variant="outline" disabled={isSubmitting}>Cancel</Button>
+                        <Button variant="outline">Cancel</Button>
                         <Button type="submit" disabled={isSubmitting}>Save</Button>
                     </CardFooter>
                 </form>
