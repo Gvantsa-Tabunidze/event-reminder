@@ -42,8 +42,24 @@ async function createEvent(event: Partial<EventItem>) : Promise<EventsResponse> 
         if (error) throw error
         if(data.length > 0){
             console.log(data)
-            setEvents(prev => [...prev, ...data]);
+            const createdEvent = data[0]
+            setEvents(prev => [...prev, createdEvent]);
+            //Calculate noticiation time
+            if(createdEvent.date){
+                const eventDate = new Date(createdEvent.date);
+                const notifyAt = new Date(eventDate);
+                notifyAt.setDate(eventDate.getDate() - 1);
+            //Insert into notifications table
+            await supabase.from("push-notifications").insert({
+            event_id: createdEvent.id,
+            user_id,
+            notify_at: notifyAt.toISOString(),
+            is_sent: false
+        });
+            }
         }
+
+       
         return {success:true, data:data ?? []}
     } catch (error) {
         return {success:false, error, data:[]}
