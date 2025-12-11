@@ -14,7 +14,7 @@ export async function registerPush(vapidPublicKey: string): Promise<void> {
   let registration;
   try {
     registration = await navigator.serviceWorker.register("/sw.js");
-    console.log("Service worker registered:", registration);
+    console.log("Service worker registration succeeded", registration)
   } catch (err) {
     console.error("Service worker registration failed:", err);
     return;
@@ -58,19 +58,20 @@ export async function registerPush(vapidPublicKey: string): Promise<void> {
   const {
     data: { session },
   } = await supabase.auth.getSession();
-  console.log("User session:", session);
   if (!session) return;
 
   // Save subscription
   try {
    const { data, error } = await supabase
-  .from("push-subscriptions")
+  .from("push_subscriptions")
   .upsert(
-    { user_id: session.user.id, subscription },
+    { user_id: session.user.id,
+    subscription: subscription.toJSON()
+    },
     { onConflict: "user_id" }
   )
-  .select("*"); // <-- this returns the inserted/updated ro
-    console.log("Subscription saved:", data, error);
+  .select("*"); // <-- this returns the inserted/updated row
+    console.log("Subscription saved:", data);
   } catch (err) {
     console.error("Failed to save subscription:", err);
   }

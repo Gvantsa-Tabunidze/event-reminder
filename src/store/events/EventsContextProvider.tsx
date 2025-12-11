@@ -50,7 +50,7 @@ async function createEvent(event: Partial<EventItem>) : Promise<EventsResponse> 
                 const notifyAt = new Date(eventDate);
                 notifyAt.setDate(eventDate.getDate() - 1);
             //Insert into notifications table
-            await supabase.from("push-notifications").insert({
+            await supabase.from("push_notifications").insert({
             event_id: createdEvent.id,
             user_id,
             notify_at: notifyAt.toISOString(),
@@ -58,8 +58,6 @@ async function createEvent(event: Partial<EventItem>) : Promise<EventsResponse> 
         });
             }
         }
-
-       
         return {success:true, data:data ?? []}
     } catch (error) {
         return {success:false, error, data:[]}
@@ -78,7 +76,21 @@ async function updateEvent(id: string, updates: Partial<EventItem>) : Promise<Ev
     .select("*")  
     if (error) throw error
     if(data! && data.length > 0){
-        setEvents(prev => prev.map((event)=>(event.id === id ? {...event, ...data[0]} : event) ))
+        const updatedevent = data[0]
+        setEvents(prev => prev.map((event)=>(event.id === id ? {...event, ...updatedevent} : event) ))
+        //Calculate noticiation time
+            if(updatedevent.date){
+                const eventDate = new Date(updatedevent.date);
+                const notifyAt = new Date(eventDate);
+                notifyAt.setDate(eventDate.getDate() - 1);
+            //Insert into notifications table
+            await supabase.from("push_notifications")
+            .update({
+            notify_at: notifyAt.toISOString(),
+            is_sent: false
+            })
+            .eq("event_id", id);
+            }
     }
     return { success: true, data: data ?? [] }
     } catch (error) {

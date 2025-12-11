@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import webpush from "web-push";
+import webpush from "npm:web-push";
+
 
 // ---------------------------
 // 1. Setup Supabase client
@@ -14,7 +15,7 @@ const supabase = createClient(
 // 2. Setup VAPID keys
 // ---------------------------
 webpush.setVapidDetails(
-  "mailto:you@yourdomain.com", // your real email
+  "mailto:gvantsaletta9@gmail.com", // your real email
   Deno.env.get("VITE_VAPID_PUBLIC_KEY")!,
   Deno.env.get("VITE_VAPID_PRIVATE_KEY")!
 );
@@ -27,7 +28,7 @@ serve(async () => {
 
   // Get pending notifications
   const { data: notifications, error } = await supabase
-    .from("push-notifications")
+    .from("push_notifications")
     .select("id, event_id, user_id, events(title)")
     .eq("is_sent", false)
     .lte("notify_at", now);
@@ -42,7 +43,7 @@ serve(async () => {
   for (const n of notifications) {
     // Get all subscriptions for the user
     const { data: subs } = await supabase
-      .from("push-subscriptions")
+      .from("push_subscriptions")
       .select("subscription")
       .eq("user_id", n.user_id);
 

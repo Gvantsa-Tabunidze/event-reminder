@@ -1,3 +1,13 @@
+self.addEventListener('install', (event) => {
+  self.skipWaiting(); // Activate immediately
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(clients.claim()); // Take control of pages immediately
+});
+
+
+
 self.addEventListener('push', (event)=>{
     //fallback if the push notifications are malformed or empty
     let payload = {
@@ -14,6 +24,9 @@ self.addEventListener('push', (event)=>{
         self.registration.showNotification(payload.title, {
             body: payload.body,      
             data: payload.data ?? {},
+            icon: "/icons/notification-icon.png",
+            badge: "/icons/badge.png",
+
         })
     )
 })

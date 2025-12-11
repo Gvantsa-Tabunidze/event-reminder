@@ -11,7 +11,6 @@ const VAPID_PUBLIC_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY;
     registerPush(VAPID_PUBLIC_KEY).catch((err)=>console.log(err))
   }, []);
 
-
     return (
         <SidebarProvider>
             <div className="flex min-h-screen w-full">
