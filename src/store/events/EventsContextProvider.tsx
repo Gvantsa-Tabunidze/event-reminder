@@ -49,15 +49,32 @@ async function createEvent(event: Partial<EventItem>) : Promise<EventsResponse> 
                 const eventDate = new Date(createdEvent.date);
                 const notifyAt = new Date(eventDate);
                 notifyAt.setDate(eventDate.getDate() - 1);
+                notifyAt.setHours(12, 0, 0, 0); 
             //Insert into notifications table
             await supabase.from("push_notifications").insert({
             event_id: createdEvent.id,
+            title:createdEvent.title,
             user_id,
-            notify_at: notifyAt.toISOString(),
+            notify_at: new Date().toISOString(),
             is_sent: false
         });
             }
         }
+
+        // Trigger edge function to send push notifications
+        try {
+          await fetch("https://quqwekpgxizfxvhdzbbx.functions.supabase.co/send-reminders", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY}`,
+              "Content-Type": "application/json"
+            }
+          });
+          console.log("Edge function triggered successfully");
+        } catch (err) {
+          console.error("Failed to trigger edge function:", err);
+        }
+      
         return {success:true, data:data ?? []}
     } catch (error) {
         return {success:false, error, data:[]}
@@ -92,6 +109,22 @@ async function updateEvent(id: string, updates: Partial<EventItem>) : Promise<Ev
             .eq("event_id", id);
             }
     }
+
+    
+        // Trigger edge function to send push notifications
+        try {
+          await fetch("https://quqwekpgxizfxvhdzbbx.functions.supabase.co/send-reminders", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY}`,
+              "Content-Type": "application/json"
+            }
+          });
+          console.log("Edge function triggered successfully");
+        } catch (err) {
+          console.error("Failed to trigger edge function:", err);
+        }
+      
     return { success: true, data: data ?? [] }
     } catch (error) {
     console.log(error)
@@ -117,12 +150,7 @@ try {
     console.log(error)
     return { success: false, error, data: [] }
 }
-}
-
-
-
-
-  
+}  
   return (
    <EventsContext.Provider value={{events, getEvents, createEvent, updateEvent, deleteEvent}}>
     {children}

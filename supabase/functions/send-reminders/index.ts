@@ -19,6 +19,8 @@ webpush.setVapidDetails(
   Deno.env.get("VITE_VAPID_PUBLIC_KEY")!,
   Deno.env.get("VITE_VAPID_PRIVATE_KEY")!
 );
+console.log('Public Key:', Deno.env.get("VITE_VAPID_PUBLIC_KEY"));
+console.log('Private Key:', Deno.env.get("VITE_VAPID_PRIVATE_KEY"));
 
 // ---------------------------
 // 3. Edge function handler
@@ -52,11 +54,13 @@ serve(async () => {
     // Send push notification
     for (const s of subs) {
       try {
+        const subscription = typeof s.subscription === "string" ? JSON.parse(s.subscription) : s.subscription;
+        console.log("Sending push to:", subscription.endpoint);
         await webpush.sendNotification(
-          s.subscription,
+          subscription,
           JSON.stringify({
             title: "Event Reminder",
-            body: `Your event "${n.events?.[0]?.title}" is tomorrow!`,
+            body: `Your event "${n.events[0].title}" is tomorrow!`,
             data: { url: `/event/${n.event_id}` },
           })
         );

@@ -7,11 +7,11 @@ self.addEventListener('activate', (event) => {
 });
 
 
-
 self.addEventListener('push', (event)=>{
+  console.log('[SW] REAL PUSH RECEIVED');
     //fallback if the push notifications are malformed or empty
     let payload = {
-        title:'Remonder', 
+        title:'Reminder', 
         body:'You have an upcoming event'
     }
     try {
@@ -24,8 +24,8 @@ self.addEventListener('push', (event)=>{
         self.registration.showNotification(payload.title, {
             body: payload.body,      
             data: payload.data ?? {},
-            icon: "/icons/notification-icon.png",
-            badge: "/icons/badge.png",
+            // icon: "/icons/notification-icon.png",
+            // badge: "/icons/badge.png",
 
         })
     )
@@ -37,3 +37,4 @@ self.addEventListener("notificationclick", (event) => {
   const url = event.notification.data?.url || "/";
   event.waitUntil(clients.openWindow(url));
 });
+
