@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { EventCard } from "@/components/views/EventCard"
-import type { EventItem } from "@/api/type.ts"
 import { useEvents } from "@/store/events/hooks/EventsContextHook"
 
 

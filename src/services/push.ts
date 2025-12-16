@@ -14,17 +14,13 @@ export async function registerPush(vapidPublicKey: string): Promise<void> {
   let registration;
   try {
     registration = await navigator.serviceWorker.register("/sw.js");
-    console.log("Service worker registration succeeded", registration)
+    // console.log("Service worker registration succeeded", registration)
   } catch (err) {
     console.error("Service worker registration failed:", err);
     return;
   }
-  navigator.serviceWorker.ready.then(async (reg) => {
-  const existing = await reg.pushManager.getSubscription();
-  console.log("Existing subscription:", existing);
-});
 
-
+  
   // Ask for permission
   const permission = await Notification.requestPermission();
   console.log("Notification permission:", permission);
@@ -48,7 +44,7 @@ export async function registerPush(vapidPublicKey: string): Promise<void> {
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
     });
-    console.log("Push subscription object:", subscription);
+    // console.log("Push subscription object:", subscription);
   } catch (err) {
     console.error("Push subscription failed:", err);
     return;

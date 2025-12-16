@@ -27,11 +27,10 @@ console.log('Private Key:', Deno.env.get("VITE_VAPID_PRIVATE_KEY"));
 // ---------------------------
 serve(async () => {
   const now = new Date().toISOString();
-
   // Get pending notifications
   const { data: notifications, error } = await supabase
     .from("push_notifications")
-    .select("id, event_id, user_id, events(title)")
+    .select("id, event_id, user_id, title")
     .eq("is_sent", false)
     .lte("notify_at", now);
 
@@ -39,6 +38,7 @@ serve(async () => {
     console.error("DB fetch error:", error);
     return new Response("Database error", { status: 500 });
   }
+console.log("Notifications fetched:", notifications);
 
   if (!notifications?.length) return new Response("No notifications", { status: 200 });
 
@@ -60,7 +60,7 @@ serve(async () => {
           subscription,
           JSON.stringify({
             title: "Event Reminder",
-            body: `Your event "${n.events[0].title}" is tomorrow!`,
+            body: `Your event "${n.title}" is tomorrow!`,
             data: { url: `/event/${n.event_id}` },
           })
         );
