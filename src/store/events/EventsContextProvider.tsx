@@ -4,11 +4,15 @@ import {supabase} from "@/api/supabaseClient.ts";
 import {useState} from "react";
 import {type IEventsContextChildren} from "./types/EventsContextChildren"
 import {type EventsResponse} from "@/api/type"
+import { useEffect } from "react";
 
 
 export function EventsContextProvider({children}:IEventsContextChildren) {
 const [events, setEvents] = useState<EventItem[]>([])
 
+ useEffect(() => {
+       getEvents()
+    }, [])
 
 async function getEvents(): Promise<EventsResponse> {
    try {

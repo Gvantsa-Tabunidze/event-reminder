@@ -27,7 +27,7 @@ export const EventModal:React.FC<EventModalProps> = ({onClose}) => {
             date:'',
             time:'',
             address:'',
-            attendees: [] as string[]
+            attendees:''
         },
         onSubmit: async (values, {setSubmitting, resetForm}) => {
             try {
@@ -37,7 +37,7 @@ export const EventModal:React.FC<EventModalProps> = ({onClose}) => {
                     date:values.date,
                     time:values.time,
                     address:values.address,
-                    attendees:values.attendees
+                    attendees:values.attendees.split(',').map((s)=>s.trim())
                 });
                 console.log(result)
                 if(result.success) {
@@ -66,9 +66,11 @@ export const EventModal:React.FC<EventModalProps> = ({onClose}) => {
                     <Input name="date" type="date" value={values.date} onChange={handleChange} onBlur={handleBlur}/>
                     <Input name="time" type="time"  value={values.time} onChange={handleChange} onBlur={handleBlur}/>
                     <Input name="address" placeholder="Address" value={values.address} onChange={handleChange} onBlur={handleBlur}/>
-                    <Input name="attendees" placeholder="Attendees" value={values.attendees} onChange={handleChange} onBlur={handleBlur}/>
+                    <Input name="attendees" placeholder="Attendees" value={values.attendees}
+                    onChange={handleChange}
+                    onBlur={handleBlur}/>
                     <CardFooter className="flex justify-end gap-4 px-0">
-                        <Button variant="outline">Cancel</Button>
+                        <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
                         <Button type="submit" disabled={isSubmitting}>Save</Button>
                     </CardFooter>
                 </form>

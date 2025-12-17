@@ -32,7 +32,7 @@ export function EventCard({ event }: Props) {
                         <div className="flex items-center gap-2"><Calendar size={16}/> {event.date}</div>
                         <div className="flex items-center gap-2"><Clock size={16}/> {event.time}</div>
                         <div className="flex items-center gap-2"><MapPin size={16}/> {event.address}</div>
-                        <div className="flex items-center gap-2"><Users size={16}/> {event.attendees}</div>
+                        <div className="flex items-center gap-2"><Users size={16}/> {event.attendees?.join(",")}</div>
                     </div>
                 </ItemContent>
                 <ItemActions>
