@@ -3,7 +3,7 @@ import { LayoutDashboard, Bell, List } from "lucide-react"
 
 const items = [
     { title: "Home", url: "/", icon: LayoutDashboard },
-    { title: "All notifications", url: "/notifications", icon: Bell },
+    { title: "All notifications", url: "/all-notifications", icon: Bell },
     { title: "All events", url: "/events", icon: List },
 ]
 

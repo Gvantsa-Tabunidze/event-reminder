@@ -25,7 +25,7 @@ export interface Notification{
     notify_at?:string,
     is_sent?:boolean,
     is_read: boolean,
-    title:string
+    title:string,
 }
 
 export interface NotificationResponse {

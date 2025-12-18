@@ -9,7 +9,7 @@ const EvItem = ({event}:EventItemProps) => {
   const {title,date,time}=  event
   return (
     <Link to={`${event.id}`}>
-        <Item variant="default">
+        <Item variant="default" className="p-2">
           <ItemContent>
             <ItemTitle>{title}</ItemTitle>
           </ItemContent>

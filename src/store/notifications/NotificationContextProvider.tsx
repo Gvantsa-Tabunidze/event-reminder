@@ -4,6 +4,7 @@ import {type NotificationResponse} from "../../api/type.ts"
 import { NotificationContext } from "./NotificationContext"
 import { useState } from "react"
 import { supabase } from "@/api/supabaseClient.ts"
+import { useEffect } from "react"
 
 
 export const NotificationContextProvider = ({children}:NotificationContextChildren ) => {
@@ -31,6 +32,23 @@ async function getNotifications() : Promise<NotificationResponse>{
     return {success:false, error, data:[]}
     }
 }
+
+useEffect(()=>{
+   const timeoutId =  setTimeout(()=>{
+        getNotifications()
+    }, 3000)
+    const intervalId = setInterval(()=>{
+        getNotifications()
+    }, 5*60*1000)
+    console.log(notifications)
+
+    return ()=>{
+        clearTimeout(timeoutId)
+        clearInterval(intervalId)
+    }
+},[])
+
+
 
 async function toggleToRead(notificationId:string) : Promise<void> {
 try {

@@ -145,7 +145,7 @@
             font-weight: 500;
             transition: color 0.2s;
         }
-        a:hover { color: var(--color-primary-foreground); }
+        a:hover { color: var(--color-muted-foreground); }
 
 
         /* Lists */

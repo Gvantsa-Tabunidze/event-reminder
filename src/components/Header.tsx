@@ -23,7 +23,6 @@ const {authSession, loading} = useUserAuth()
 
     return (
         <div className="flex">
-            <SidebarTrigger/>
             <nav
                 className="sticky top-0 w-full border-b bg-background/95 z-50 flex items-center justify-between px-40 py-2">
                 <Link to="/">Logo</Link>

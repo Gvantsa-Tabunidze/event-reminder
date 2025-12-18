@@ -6,14 +6,12 @@ interface NotifItemProps {
 }
 
 const NotificationItem = ({ notification, toggleRead }: NotifItemProps) => (
-  <div
-    className={`p-2 border-b last:border-none cursor-pointer ${
-      notification.is_read ? "bg-white" : "bg-blue-50"
-    }`}
-    onClick={()=>toggleRead(notification.id)}
-  >
-    {notification.title}
+  <div className="p-2 cursor-pointer flex items-center"
+    onClick={()=>toggleRead(notification.id)}>
+    <p className="text-sm text-[var(--color-primary)] w-full">{notification.title}</p>
+    {!notification.is_read && <div className="bg-red-400 h-2 w-2 rounded-full"></div>}
   </div>
+    
 );
 
 export  default NotificationItem

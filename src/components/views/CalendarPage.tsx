@@ -25,9 +25,10 @@ export function CalendarPage() {
         setDate(selectedDate)
         
     }
+   
 
     return (
-        <div className="flex flex-col gap-4 w-full h-full">
+        <div className="flex flex-col gap-12 w-full">
             <h2 className="text-2xl font-medium">
                 {date ? date.toLocaleString("default", {month: "long", year: "numeric"}) : ""}
             </h2>
@@ -43,10 +44,15 @@ export function CalendarPage() {
                     <Button size="sm" className="w-auto" onClick={() => setModalOpen(true)}> Add Event </Button>
                 </div>
             </div>
-            <div className="flex flex-col gap-2 mt-4">
-            {filteredEvents.length === 0 && <p>No events on this date.</p>}
-            {filteredEvents.map(ev => <EvItem key={ev.id} event={ev}/>)}
+            <div>
+                <h3 className="text-xl font-medium">
+                 {`Events on ${new Date(date!).toLocaleDateString("en-US", {month: "long",day: "numeric",})}`}</h3>
+                <div className="flex flex-col mt-4">
+                    {filteredEvents.length === 0 && <p>No events on this date.</p>}
+                    {filteredEvents.map(ev => <EvItem key={ev.id} event={ev}/>)}
+                </div>
             </div>
+            
             {modalOpen && <EventModal onClose={()=>{
                 setModalOpen(false)
                 }}/>}
