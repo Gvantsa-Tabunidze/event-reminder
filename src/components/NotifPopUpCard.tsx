@@ -8,7 +8,7 @@ import { Badge } from "./ui/badge"
 
 const NotifPopUpCard = () => {
 const [isOpen, setIsOpen] = useState(false)
-const {toggleToRead,notifications,markAllAsRead} = useNotifications()
+const {toggleToRead,notifications} = useNotifications()
 
 
   return (

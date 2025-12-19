@@ -40,7 +40,7 @@ useEffect(()=>{
     const intervalId = setInterval(()=>{
         getNotifications()
     }, 5*60*1000)
-    console.log(notifications)
+ 
 
     return ()=>{
         clearTimeout(timeoutId)

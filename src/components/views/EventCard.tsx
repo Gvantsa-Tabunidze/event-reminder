@@ -10,17 +10,19 @@ import { EditEventModal } from "./EditEventModal"
 
 interface Props {
     event: EventItem
+    highlight:boolean
+    id?:string
     // onChange: () => void
 }
 
-export function EventCard({ event }: Props) {
+export function EventCard({ event, highlight, id }: Props) {
     const {deleteEvent} = useEvents()
     const [editOpen, setEditOpen] = useState(false)
 
   
 
     return (
-        <>
+        <div id={id} className={`${highlight ? "bg-pink-900" : ""} hover:shadow-md rounded-md`}>
             <Item className="items-start" variant="outline">
                 <ItemMedia className="bg-blue-500 text-white p-2 rounded-lg">
                     <Calendar />
@@ -41,6 +43,6 @@ export function EventCard({ event }: Props) {
                 </ItemActions>
             </Item>
            {editOpen && <EditEventModal event={event} onClose={()=>{setEditOpen(false)}}/>}
-        </>
+        </div>
     )
 }
