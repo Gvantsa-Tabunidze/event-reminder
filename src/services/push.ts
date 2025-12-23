@@ -51,14 +51,12 @@ export async function registerPush(vapidPublicKey: string): Promise<void> {
   }
 
   // Get user session
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const {data: { session }} = await supabase.auth.getSession();
   if (!session) return;
 
   // Save subscription
   try {
-   const { data, error } = await supabase
+   const { data } = await supabase
   .from("push_subscriptions")
   .upsert(
     { user_id: session.user.id,
@@ -66,7 +64,7 @@ export async function registerPush(vapidPublicKey: string): Promise<void> {
     },
     { onConflict: "user_id" }
   )
-  .select("*"); // <-- this returns the inserted/updated row
+  .select("*"); // returns the inserted/updated row
     console.log("Subscription saved:", data);
   } catch (err) {
     console.error("Failed to save subscription:", err);

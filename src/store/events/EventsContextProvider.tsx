@@ -65,15 +65,18 @@ async function createEvent(event: Partial<EventItem>) : Promise<EventsResponse> 
             }
         }
 
+
         // Trigger edge function to send push notifications
         try {
-          await fetch("https://quqwekpgxizfxvhdzbbx.functions.supabase.co/send-reminders", {
+          const res = await fetch("https://quqwekpgxizfxvhdzbbx.functions.supabase.co/send-reminders", {
             method: "POST",
             headers: {
               "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY}`,
               "Content-Type": "application/json"
             }
           });
+          const data = await res.json();
+        console.log("Debug response from function:", data);
           console.log("Edge function triggered successfully");
         } catch (err) {
           console.error("Failed to trigger edge function:", err);

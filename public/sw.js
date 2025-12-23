@@ -8,8 +8,7 @@ self.addEventListener('activate', (event) => {
 
 
 self.addEventListener('push', (event)=>{
-  console.log('[SW] REAL PUSH RECEIVED');
-    //fallback if the push notifications are malformed or empty
+     //fallback if the push notifications are malformed or empty
     let payload = {
         title:'Reminder', 
         body:'You have an upcoming event'
