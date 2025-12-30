@@ -12,7 +12,6 @@ interface Props {
     event: EventItem
     highlight:boolean
     id?:string
-    // onChange: () => void
 }
 
 export function EventCard({ event, highlight, id }: Props) {
@@ -24,13 +23,13 @@ export function EventCard({ event, highlight, id }: Props) {
     return (
         <div id={id} className={`${highlight ? "bg-pink-900" : ""} hover:shadow-md rounded-md`}>
             <Item className="items-start" variant="outline">
-                <ItemMedia className="bg-blue-500 text-white p-2 rounded-lg">
+                <ItemMedia className="bg-pink-900 text-white p-2 rounded-lg">
                     <Calendar />
                 </ItemMedia>
                 <ItemContent className="gap-2">
                     <ItemTitle>{event.title}</ItemTitle>
-                    {event.badge && <Badge>{event.badge}</Badge>}
-                    <div className="grid grid-cols-2 gap-4">
+                    {event.badge && <Badge className="bg-muted-foreground text-secondary border-slate-300">{event.badge}</Badge>}
+                    <div className="grid grid-cols-2 gap-4 text-secondary">
                         <div className="flex items-center gap-2"><Calendar size={16}/> {event.date}</div>
                         <div className="flex items-center gap-2"><Clock size={16}/> {event.time}</div>
                         <div className="flex items-center gap-2"><MapPin size={16}/> {event.address}</div>
@@ -38,7 +37,7 @@ export function EventCard({ event, highlight, id }: Props) {
                     </div>
                 </ItemContent>
                 <ItemActions>
-                    <Button size="sm" onClick={() => setEditOpen(true)}>Edit</Button>
+                    <Button size="sm" onClick={() => setEditOpen(true)} className="bg-secondary text-secondary-foreground">Edit</Button>
                     <Button size="sm" variant="destructive" onClick={()=>deleteEvent(event.id)}>Delete</Button>
                 </ItemActions>
             </Item>

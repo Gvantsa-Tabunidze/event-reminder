@@ -55,6 +55,8 @@ export const EventModal:React.FC<EventModalProps> = ({onClose}) => {
     const {values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting} = formik;
 
   return (
+<div className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm flex items-center justify-center p-4">
+ <div className="w-full max-w-lg animate-in fade-in zoom-in duration-200">
    <Card>
         <CardHeader>
             <CardTitle>Add or Edit event</CardTitle>
@@ -76,6 +78,8 @@ export const EventModal:React.FC<EventModalProps> = ({onClose}) => {
                 </form>
             </CardContent>
     </Card>
+ </div>
+</div>
   )
 }
 

@@ -4,14 +4,6 @@ import { EventCard } from "./views/EventCard"
 
 const Upcomingevents = () => {
 const {events} = useEvents()
-// const [upcomingEvents, setUpcomingEvents] = useState<EventItem[]>([])
-// useEffect(() => {
-//   const fetchUpcomingEvents =async() => {
-//     const result =  await  getEvents( true, 3 )
-//     if(result.success) setUpcomingEvents(result.data)
-//   }
-// fetchUpcomingEvents()
-// }, [getEvents]);
 const filteredEvents = events
 .filter(ev => ev.date && new Date(ev.date) >= new Date())
 .sort((a, b) => new Date(a.date!).getTime() - new Date(b.date!).getTime())
