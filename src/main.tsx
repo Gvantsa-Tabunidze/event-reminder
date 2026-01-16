@@ -6,6 +6,7 @@ import {BrowserRouter} from 'react-router-dom'
 import {ThemeProvider} from "@/store/theme/ThemeProvider.tsx";
 import {AuthContextProvider} from "@/store/auth/AuthContextProvider.tsx";
 import { EventsContextProvider } from './store/events/EventsContextProvider.tsx'
+import {NotificationContextProvider} from "./store/notifications/NotificationContextProvider.tsx"
 
 
 createRoot(document.getElementById('root')!).render(
@@ -14,7 +15,9 @@ createRoot(document.getElementById('root')!).render(
             <BrowserRouter>
                 <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
                     <EventsContextProvider>
-                        <App/>
+                        <NotificationContextProvider>
+                            <App/>
+                        </NotificationContextProvider>
                     </EventsContextProvider>
                 </ThemeProvider>
             </BrowserRouter>

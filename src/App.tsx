@@ -6,6 +6,7 @@ import Home from "@/view/authorizedRoutes/Home.tsx"
 import { EventListPage } from "@/components/views/EventListPage.tsx"
 import SignIn from "@/components/SignIn.tsx";
 import SignUp from "@/components/SignUp.tsx";
+import AllNotifications from "./view/authorizedRoutes/AllNotifications"
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                 <Route index element={<Home />} />
                 {/*<Route path="calendar" element={<CalendarPage />} />*/}
                 <Route path="events" element={<EventListPage />} />
+                <Route path="all-notifications" element={<AllNotifications/>}/>
             </Route>
         </Routes>
     )

@@ -1,3 +1,4 @@
+
 export interface EventItem {
     id: string
     user_id: string
@@ -13,6 +14,23 @@ export interface EventItem {
 export interface EventsResponse {
     success:boolean,
     data:EventItem[] 
+    error?:any
+}
+
+
+export interface Notification{
+    id:string,
+    event_id?:string,
+    user_id?:string,
+    notify_at?:string,
+    is_sent?:boolean,
+    is_read: boolean,
+    title:string,
+}
+
+export interface NotificationResponse {
+    success:boolean,
+    data:Notification[] ,
     error?:any
 }
 

@@ -4,11 +4,15 @@ import {supabase} from "@/api/supabaseClient.ts";
 import {useState} from "react";
 import {type IEventsContextChildren} from "./types/EventsContextChildren"
 import {type EventsResponse} from "@/api/type"
+import { useEffect } from "react";
 
 
 export function EventsContextProvider({children}:IEventsContextChildren) {
 const [events, setEvents] = useState<EventItem[]>([])
 
+ useEffect(() => {
+       getEvents()
+    }, [])
 
 async function getEvents(): Promise<EventsResponse> {
    try {
@@ -42,8 +46,42 @@ async function createEvent(event: Partial<EventItem>) : Promise<EventsResponse> 
         if (error) throw error
         if(data.length > 0){
             console.log(data)
-            setEvents(prev => [...prev, ...data]);
+            const createdEvent = data[0]
+            setEvents(prev => [...prev, createdEvent]);
+            //Calculate noticiation time
+            if(createdEvent.date){
+                const eventDate = new Date(createdEvent.date);
+                const notifyAt = new Date(eventDate);
+                notifyAt.setDate(eventDate.getDate() - 1);
+                notifyAt.setHours(12, 0, 0, 0); 
+            //Insert into notifications table
+            await supabase.from("push_notifications").insert({
+            event_id: createdEvent.id,
+            title:createdEvent.title,
+            user_id,
+            notify_at: notifyAt.toISOString(),
+            is_sent: false
+        });
+            }
         }
+
+
+        // Trigger edge function to send push notifications
+        try {
+          const res = await fetch("https://quqwekpgxizfxvhdzbbx.functions.supabase.co/send-reminders", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY}`,
+              "Content-Type": "application/json"
+            }
+          });
+          const data = await res.json();
+        console.log("Debug response from function:", data);
+          console.log("Edge function triggered successfully");
+        } catch (err) {
+          console.error("Failed to trigger edge function:", err);
+        }
+      
         return {success:true, data:data ?? []}
     } catch (error) {
         return {success:false, error, data:[]}
@@ -62,8 +100,38 @@ async function updateEvent(id: string, updates: Partial<EventItem>) : Promise<Ev
     .select("*")  
     if (error) throw error
     if(data! && data.length > 0){
-        setEvents(prev => prev.map((event)=>(event.id === id ? {...event, ...data[0]} : event) ))
+        const updatedevent = data[0]
+        setEvents(prev => prev.map((event)=>(event.id === id ? {...event, ...updatedevent} : event) ))
+        //Calculate noticiation time
+            if(updatedevent.date){
+                const eventDate = new Date(updatedevent.date);
+                const notifyAt = new Date(eventDate);
+                notifyAt.setDate(eventDate.getDate() - 1);
+            //Insert into notifications table
+            await supabase.from("push_notifications")
+            .update({
+            notify_at: notifyAt.toISOString(),
+            is_sent: false
+            })
+            .eq("event_id", id);
+            }
     }
+
+    
+        // Trigger edge function to send push notifications
+        try {
+          await fetch("https://quqwekpgxizfxvhdzbbx.functions.supabase.co/send-reminders", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY}`,
+              "Content-Type": "application/json"
+            }
+          });
+          console.log("Edge function triggered successfully");
+        } catch (err) {
+          console.error("Failed to trigger edge function:", err);
+        }
+      
     return { success: true, data: data ?? [] }
     } catch (error) {
     console.log(error)
@@ -89,12 +157,7 @@ try {
     console.log(error)
     return { success: false, error, data: [] }
 }
-}
-
-
-
-
-  
+}  
   return (
    <EventsContext.Provider value={{events, getEvents, createEvent, updateEvent, deleteEvent}}>
     {children}

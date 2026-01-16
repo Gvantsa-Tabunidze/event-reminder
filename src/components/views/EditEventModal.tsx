@@ -51,11 +51,13 @@ export function EditEventModal({  onClose, event }: Props) {
         },
     })
 
-    const {values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting} = formik;
+    const {values, handleChange, handleBlur, handleSubmit, isSubmitting} = formik;
 
     if (!open) return null
 
      return (
+<div className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm flex items-center justify-center p-4">
+ <div className="w-full max-w-lg animate-in fade-in zoom-in duration-200">
         <Card>
         <CardHeader>
             <CardTitle>Add or Edit event</CardTitle>
@@ -75,5 +77,8 @@ export function EditEventModal({  onClose, event }: Props) {
                 </form>
             </CardContent>
     </Card>
+</div>
+ </div>
+    
   )    
 }

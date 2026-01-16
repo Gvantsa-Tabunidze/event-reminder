@@ -12,7 +12,7 @@ interface IAuthProviderProps {
 export const AuthContextProvider = ({children}: IAuthProviderProps) => {
     const [authSession, setAuthSession] = useState<Session | null>(null);
     const [loading, setLoading] = useState(true)
-    console.log(authSession)
+
 
     //Sign up new user
     const signUpNewUser = async ({email, password, name}: { email: string, password: string, name?: string }) => {

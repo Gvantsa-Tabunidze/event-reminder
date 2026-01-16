@@ -4,7 +4,7 @@ import {type EventsResponse} from "@/api/type"
 
 export interface IEventsContext {
   events: EventItem[]
-  getEvents: () => Promise<EventsResponse>
+  getEvents: (upcomingOnly?: boolean, limit?: number) => Promise<EventsResponse>
   createEvent: (event: Partial<EventItem>) => Promise<EventsResponse>
   updateEvent: (id: string, updates: Partial<EventItem>) => Promise<EventsResponse>
   deleteEvent: (id: string) => Promise<EventsResponse>
