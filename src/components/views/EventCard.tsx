@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge"
 import { Calendar, Clock, MapPin, Users } from "lucide-react"
 import {useEvents} from "@/store/events/hooks/EventsContextHook"
 import { EditEventModal } from "./EditEventModal"
+import { Trash } from "lucide-react"
+import { Pencil } from "lucide-react"
 
 
 interface Props {
@@ -21,7 +23,7 @@ export function EventCard({ event, highlight, id }: Props) {
   
 
     return (
-        <div id={id} className={`${highlight ? "bg-pink-900" : ""} hover:shadow-md rounded-md`}>
+        <div id={id} className={`${highlight ? "bg-pink-100" : ""} hover:shadow-md rounded-md`}>
             <Item className="items-start" variant="outline">
                 <ItemMedia className="bg-pink-900 text-white p-2 rounded-lg">
                     <Calendar />
@@ -36,9 +38,9 @@ export function EventCard({ event, highlight, id }: Props) {
                         <div className="flex items-center gap-2"><Users size={16}/> {event.attendees?.join(",")}</div>
                     </div>
                 </ItemContent>
-                <ItemActions>
-                    <Button size="sm" onClick={() => setEditOpen(true)} className="bg-secondary text-secondary-foreground">Edit</Button>
-                    <Button size="sm" variant="destructive" onClick={()=>deleteEvent(event.id)}>Delete</Button>
+                <ItemActions className="gap-0">
+                    <Button size="icon" variant="ghost" onClick={() => setEditOpen(true)} className="text-foreground hover:text-foreground"><Pencil /></Button>
+                    <Button size="icon" variant="ghost" onClick={()=>deleteEvent(event.id)}><Trash /></Button>
                 </ItemActions>
             </Item>
            {editOpen && <EditEventModal event={event} onClose={()=>{setEditOpen(false)}}/>}

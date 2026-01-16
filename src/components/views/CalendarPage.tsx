@@ -48,7 +48,7 @@ export function CalendarPage() {
                 <h3 className="text-xl font-medium">
                  {`Events on ${new Date(date!).toLocaleDateString("en-US", {month: "long",day: "numeric",})}`}</h3>
                 <div className="flex flex-col mt-4">
-                    {filteredEvents.length === 0 && <p>No events on this date.</p>}
+                    {filteredEvents.length === 0 && <p className="text-secondary">No events on this date.</p>}
                     {filteredEvents.map(ev => <EvItem key={ev.id} event={ev}/>)}
                 </div>
             </div>

@@ -12,7 +12,7 @@ const ReadBadge = ({toggleRead, notification}:ReadBadgeProps) => {
       e.preventDefault();
       toggleRead(notification.id)
       }}>
-        <div className="bg-red-400 h-2 w-2 rounded-full"></div>
+        <div className="bg-destructive h-2 w-2 rounded-full"></div>
       </button>
   )
 }

@@ -8,14 +8,14 @@ interface EventItemProps{
 const EvItem = ({event}:EventItemProps) => {
   const {title,date,time}=  event
   return (
-    <Link to={`${event.id}`}>
+    <Link to="/events" state={{ scrollToEventId: event.id }} className="text-foreground">
         <Item variant="default" className="p-2">
           <ItemContent>
-            <ItemTitle>{title}</ItemTitle>
+            <ItemTitle>{`"${title}"`}</ItemTitle>
           </ItemContent>
           <ItemDescription className="flex gap-2">
-              <small>{date}</small>
-              <small>{time}</small>
+              <small className="text-secondary">{date}</small>
+              <small className="text-secondary">{time}</small>
           </ItemDescription>
         </Item>
     </Link>
