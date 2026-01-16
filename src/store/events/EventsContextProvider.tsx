@@ -59,7 +59,7 @@ async function createEvent(event: Partial<EventItem>) : Promise<EventsResponse> 
             event_id: createdEvent.id,
             title:createdEvent.title,
             user_id,
-            notify_at: new Date().toISOString(),
+            notify_at: notifyAt.toISOString(),
             is_sent: false
         });
             }
