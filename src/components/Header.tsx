@@ -22,9 +22,8 @@ const {authSession, loading} = useUserAuth()
 
     return (
         <div className="flex">
-            <nav
-                className="sticky top-0 w-full border-b bg-background/95 z-50 flex items-center justify-between px-40 py-2">
-                <Link to="/">Logo</Link>
+            <nav className="sticky top-0 w-full border-b bg-background/95 z-50 flex items-center justify-between px-10 py-2">
+                <div>Logo</div>
                 <div className="flex items-center justify-between gap-5">
                     <div className="flex items-start gap-2">
                         <NotifPopUpCard/>

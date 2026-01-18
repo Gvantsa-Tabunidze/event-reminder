@@ -16,11 +16,10 @@ interface Props {
     id?:string
 }
 
+
 export function EventCard({ event, highlight, id }: Props) {
     const {deleteEvent} = useEvents()
     const [editOpen, setEditOpen] = useState(false)
-
-  
 
     return (
         <div id={id} className={`${highlight ? "bg-pink-100" : ""} hover:shadow-md rounded-md`}>
@@ -30,10 +29,10 @@ export function EventCard({ event, highlight, id }: Props) {
                 </ItemMedia>
                 <ItemContent className="gap-2">
                     <ItemTitle>{event.title}</ItemTitle>
-                    {event.badge && <Badge className="bg-muted-foreground text-secondary border-slate-300">{event.badge}</Badge>}
+                    {event.badge && <Badge className="bg-muted-foreground text-secondary border-slate-400">{event.badge}</Badge>}
                     <div className="grid grid-cols-2 gap-4 text-secondary">
-                        <div className="flex items-center gap-2"><Calendar size={16}/> {event.date}</div>
-                        <div className="flex items-center gap-2"><Clock size={16}/> {event.time}</div>
+                        <div className="flex items-center gap-2"><Calendar size={16}/> {event.date?.split('T')[0]}</div>
+                        <div className="flex items-center gap-2"><Clock size={16}/> {event.date?.split('T')[1].slice(0,5)}</div>
                         <div className="flex items-center gap-2"><MapPin size={16}/> {event.address}</div>
                         <div className="flex items-center gap-2"><Users size={16}/> {event.attendees?.join(",")}</div>
                     </div>

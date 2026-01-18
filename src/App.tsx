@@ -20,7 +20,6 @@ function App() {
             {/* Protected layout */}
             <Route element={<MainPage />}>
                 <Route index element={<Home />} />
-                {/*<Route path="calendar" element={<CalendarPage />} />*/}
                 <Route path="events" element={<EventListPage />} />
                 <Route path="all-notifications" element={<AllNotifications/>}/>
             </Route>

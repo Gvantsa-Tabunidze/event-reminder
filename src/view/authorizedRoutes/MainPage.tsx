@@ -17,7 +17,7 @@ const VAPID_PUBLIC_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY;
                 <AppSidebar/>
                 <main className="flex-1 flex flex-col">
                     <Header/>
-                    <div className="p-4">
+                    <div className='px-10'>
                         <Outlet/>
                     </div>
                 </main>

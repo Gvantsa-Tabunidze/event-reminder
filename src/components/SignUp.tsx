@@ -58,7 +58,15 @@ const SignUp = () => {
 
     const {authSession, signUpNewUser} = useUserAuth()!
     console.log(authSession)
-
+    
+    if (authSession) {
+        return (
+            <div className="flex h-screen items-center justify-center">
+            <h1 className="text-2xl font-bold">Check your email!</h1>
+            </div>
+        );
+    }
+    
     return (
         <div className="flex flex-col items-center gap-4">
             <form className="flex flex-col justify-center gap-6" onSubmit={handleSubmit}>

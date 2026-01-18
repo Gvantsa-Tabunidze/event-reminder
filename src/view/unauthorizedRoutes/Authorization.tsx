@@ -5,8 +5,8 @@ const Authorization = () => {
 
 
     return (
-        <div>
-            <h1>Authorization</h1>
+        <div className="flex flex-col h-screen items-center justify-center">
+            <h2 className="mt-4">Authorization</h2>
             <Outlet/>
         </div>
     )
